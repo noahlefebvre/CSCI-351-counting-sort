@@ -45,7 +45,7 @@ main(int argc, char *argv[]) {
   unsigned n = strtol(argv[1], NULL, 10);
 
   /* Get key size from command line */
-  unsigned k = strtol(argv[1], NULL, 10);
+  unsigned k = strtol(argv[2], NULL, 10);
 
   /* Allocate memory */
   unsigned * const a = malloc(n * sizeof(*a));

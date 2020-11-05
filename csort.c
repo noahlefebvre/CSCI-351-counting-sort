@@ -7,6 +7,10 @@
 /* strtol */
 #include <stdio.h>
 
+/* OpenMP */
+#include <omp.h>
+
+
 static int
 csort(unsigned const k,
       unsigned const n,
@@ -18,7 +22,12 @@ csort(unsigned const k,
     return -1;
   }
 
+
+/* parallelize for loop*/
+
+# pragma omp parallel for 
   for (unsigned i = 0; i < n; i++) {
+# pragma omp atomic
     count[in[i]]++;
   }
 
@@ -29,8 +38,12 @@ csort(unsigned const k,
     total += counti;
   }
 
+/*parallelize for loop*/
+# pragma omp parallel for
   for (unsigned i = 0; i < n; i++) {
+    # pragma omp critcal 
     out[count[in[i]]] = in[i];
+    # pragma omp atomic
     count[in[i]]++;
   }
 
@@ -56,9 +69,11 @@ main(int argc, char *argv[]) {
     a[i] = rand() % (1u << k);
   }
 
+
   /* Sort array */
   int const ret = csort(1u << k, n, a, b);
   assert(0 == ret);
+
 
   /* Validate sorted array */
   for (unsigned i = 1; i < n; i++) {

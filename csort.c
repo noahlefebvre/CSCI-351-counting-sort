@@ -27,7 +27,7 @@ csort(unsigned const k,
 
 # pragma omp parallel for 
   for (unsigned i = 0; i < n; i++) {
-# pragma omp atomic
+    # pragma omp atomic
     count[in[i]]++;
   }
 
@@ -41,7 +41,7 @@ csort(unsigned const k,
 /*parallelize for loop*/
 # pragma omp parallel for
   for (unsigned i = 0; i < n; i++) {
-    # pragma omp critcal 
+    # pragma omp critical 
     out[count[in[i]]] = in[i];
     # pragma omp atomic
     count[in[i]]++;
@@ -73,7 +73,6 @@ main(int argc, char *argv[]) {
   /* Sort array */
   int const ret = csort(1u << k, n, a, b);
   assert(0 == ret);
-
 
   /* Validate sorted array */
   for (unsigned i = 1; i < n; i++) {
